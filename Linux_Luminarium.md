@@ -19,3 +19,7 @@ I had to run the /challenge/run program again, but this time I had to use the . 
 ./challenge/run
 This command worked exactly like before, and I was able to capture the flag
 ##  Implicit relative path
+To solve this, I needed to explicitly tell Linux to run the program in the current directory using the . notation.
+cd /challenge
+./run
+This explicitly told Linux to execute the run program in the current directory, and it worked
