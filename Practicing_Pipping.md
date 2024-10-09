@@ -151,7 +151,51 @@ Correct! Passing secret value to /challenge/college...
 Great job! Here is your flag:
 pwn.college{0briYS5Q-mt423lKUDLNIUyP3Pn.dFjM5QDLxcDO0czW}
 ```
-##  writing to multiple programs
+## Writing to Multiple Programs
+
+
+In this challenge, we can solve it using `/challenge/hack`, `/challenge/the`, and `/challenge/planet`. The goal is to take the output from `/challenge/hack` and pass it as input to both `/challenge/the` and `/challenge/planet` using `tee` along with process substitution.
+
+
+The `tee` command duplicates the output of a command, allowing it to be sent to multiple destinations.
+ Process substitution allows us to use the output of a command as input for another command in a way that the receiving command treats it as a file.
+ **Command Breakdown:**
+   `/challenge/hack`: This command generates the output you want to duplicate.
+   `|`: The pipe operator sends the output of `/challenge/hack` to `tee`.
+    `tee`: This command takes the output from `/challenge/hack` and duplicates it.
+   `>( /challenge/the )`: This process substitution allows the output of `tee` to be passed as input to `/challenge/the`.
+   `>( /challenge/planet )`: Similarly, this allows the output to also be passed as input to `/challenge/planet`.
+
+```bash
+/challenge/hack | tee >( /challenge/the ) >( /challenge/planet )
+```
+
+## Split Piping stderr and stdout
+
+In this challenge, we are supposed to redirect the output from `/challenge/hack` such that standard output (stdout) goes to `/challenge/planet` and standard error (stderr) goes to `/challenge/the`, while keeping them separate.
+
+We can do this with the following command:
+```bash
+/challenge/hack > >( /challenge/planet ) 2> >( /challenge/the )
+```
+
+
+
+ `/challenge/hack`: This command runs and produces output on both stdout and stderr.
+ `>`: This operator is used to redirect stdout.
+ `>( /challenge/planet )`: This is a process substitution. It creates a temporary named pipe and connects it to the stdin of `/challenge/planet`. The stdout of `/challenge/hack` will be sent through this pipe to `/challenge/planet`.
+  `2>`: This operator is used to redirect stderr.
+ `>( /challenge/the )`: Similar to the previous substitution, this creates another temporary named pipe that connects stderr from `/challenge/hack` to the stdin of `/challenge/the`.
+```bash
+/challenge/hack > >( /challenge/planet ) 2> >( /challenge/the )
+```
+
+When you execute `/challenge/hack`, it generates both stdout and stderr. 
+ The `>` operator redirects stdout to `/challenge/planet` through the named pipe created by `>( /challenge/planet )`.
+ The `2>` operator redirects stderr to `/challenge/the` through the named pipe created by `>( /challenge/the )`.
+
+---
+
 
 
 
