@@ -1,14 +1,4 @@
-# Digesting Documentation
 
-## **Learning from Documentation**
-
-### Description
-In this challenge, we are required to pass the command `/challenge/challenge` with the argument `--giveflag`.
-
-
-```bash
-/challenge/challenge --giveflag
-```
 # Digesting Documentation
 
 ---
